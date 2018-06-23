@@ -1,25 +1,59 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OdeToFood.Models;
 using OdeToFood.Services;
+using OdeToFood.ViewModels;
 
 namespace OdeToFood.Controllers
 {
     public class HomeController : Controller
     {
 
-        public HomeController(IRestaurantData restaurantData)
+        public HomeController(IRestaurantData restaurantData, 
+            IGreeter greeter)
         {
             _restaurantData = restaurantData;
+            _greeter = greeter;
         }
 
         public IActionResult Index()
         {
-            var model = _restaurantData.GetAll();
+            var model = new HomeIndexViewModel(); // _restaurantData.GetAll();
+            model.Restaurants = _restaurantData.GetAll();
+            model.CurrentMessage = _greeter.GetMessageOfTheDay();
 
             return View(model);
         }
 
-        private IRestaurantData _restaurantData;
+        public IActionResult Details(int id)
+        {
+            var model = _restaurantData.Get(id);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(RestaurantEditModel model)
+        {
+            var newRestaurant = new Restaurant();
+            newRestaurant.Name = model.Name;
+            newRestaurant.CuisineType = model.CuisineType;
+
+            newRestaurant = _restaurantData.Add(newRestaurant); // Content("Post");
+
+            return RedirectToAction(nameof(Details), new { id = newRestaurant.Id });
+        }
+
+        private IRestaurantData _restaurantData;
+        private IGreeter _greeter;
     }
 }
