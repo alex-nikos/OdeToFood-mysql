@@ -31,7 +31,7 @@ namespace OdeToFood
             services.AddSingleton<IGreeter, Greeter>();
 
             services.AddDbContext<OdeToFoodDbContext>(options =>
-                    options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+                    options.UseSqlServer(_configuration.GetConnectionString("OdeToFood"))
                 );
 
             services.AddScoped<IRestaurantData, SqlRestaurantData>();
