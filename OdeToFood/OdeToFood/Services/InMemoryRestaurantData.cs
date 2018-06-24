@@ -24,14 +24,12 @@ namespace OdeToFood.Services
 
         public Restaurant Get(int id)
         {
-            return _restaurants.FirstOrDefault(r => r.Id == id);
+            throw new System.NotImplementedException();
         }
 
         public Restaurant Add(Restaurant restaurant)
         {
-            restaurant.Id = _restaurants.Max(r => r.Id) + 1;
-            _restaurants.Add(restaurant);
-            return restaurant;
+            throw new System.NotImplementedException();
         }
 
         private List<Restaurant> _restaurants;

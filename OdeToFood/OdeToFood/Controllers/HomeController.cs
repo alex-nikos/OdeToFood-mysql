@@ -8,8 +8,8 @@ namespace OdeToFood.Controllers
     public class HomeController : Controller
     {
 
-        public HomeController(IRestaurantData restaurantData, 
-            IGreeter greeter)
+        public HomeController(IRestaurantData restaurantData,
+                            IGreeter greeter)
         {
             _restaurantData = restaurantData;
             _greeter = greeter;
@@ -32,7 +32,17 @@ namespace OdeToFood.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(model);
+        public IActionResult Details(int id)
+        {
+            var model = _restaurantData.Get(id);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -41,14 +51,14 @@ namespace OdeToFood.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(RestaurantEditModel model)
         {
             var newRestaurant = new Restaurant();
             newRestaurant.Name = model.Name;
-            newRestaurant.CuisineType = model.CuisineType;
+            newRestaurant.Cuisine = model.Cuisine;
 
-            newRestaurant = _restaurantData.Add(newRestaurant); // Content("Post");
+            newRestaurant = _restaurantData.Add(newRestaurant);
 
             return RedirectToAction(nameof(Details), new { id = newRestaurant.Id });
         }

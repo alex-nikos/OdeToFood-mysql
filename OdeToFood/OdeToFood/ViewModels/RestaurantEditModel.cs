@@ -5,6 +5,6 @@ namespace OdeToFood.ViewModels
     public class RestaurantEditModel
     {
         public string Name { get; set; }
-        public CuisineType CuisineType { get; set; }
+        public Cuisine Cuisine { get; set; }
     }
 }
