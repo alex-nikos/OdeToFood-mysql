@@ -22,6 +22,16 @@ namespace OdeToFood.Services
             return _restaurants.OrderBy(r => r.Name);
         }
 
+        public Restaurant Get(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Restaurant Add(Restaurant restaurant)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private List<Restaurant> _restaurants;
 
     }
